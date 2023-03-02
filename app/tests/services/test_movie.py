@@ -13,13 +13,13 @@ def movie_dao():
 
     movie1 = Movie(id=1, title='Oppenheimer',
                    description='История жизни американского физика Роберта Оппенгеймера, который стоял во главе первых разработок ядерного оружия.',
-                   trailer='https://www.kinopoisk.ru/film/4664634/', year=2023, rating=10.0, genre_id=4, director_id=2)
+                   trailer='https://www.kinopoisk.ru/film/4664634/', year=2023, rating=10.0, genre_id=1, director_id=1)
     movie2 = Movie(id=2, title='Король и Шут',
                    description='История, как панки из Петербурга выбирали название группы, давали первые концерты, собрали полный зал «Юбилейного», впервые выступили в Москве и на крупнейших площадках страны. Параллельно истории становления группы и отношений между её участниками Горшок и Князь отправляются в сказочный мир спасать принцессу из плена колдуна. В пути они встречают персонажей, о которых поют в своих песнях.',
-                   trailer='https://www.kinopoisk.ru/series/4647040/', year=2023, rating=8.3, genre_id=4, director_id=2)
+                   trailer='https://www.kinopoisk.ru/series/4647040/', year=2023, rating=8.3, genre_id=2, director_id=2)
     movie3 = Movie(id=3, title='Убийцы цветочной луны',
                    description='История разворачивается в 1920-х годах вокруг индейского племени осейдж, проживающего в американском городе Оклахома. Коренных жителей США убивают одного за другим после того, как один из них разбогател, обнаружив нефть. Массовые убийства осейджей привлекают внимание ФБР, и оно приступает к расследованию.',
-                   trailer='https://www.kinopoisk.ru/film/1077781/', year=2023, rating=10.0, genre_id=4, director_id=2)
+                   trailer='https://www.kinopoisk.ru/film/1077781/', year=2023, rating=10.0, genre_id=3, director_id=3)
 
     movie_dao.get_one = MagicMock(return_value=movie1)
     movie_dao.get_all = MagicMock(return_value=[movie1, movie2, movie3])
@@ -41,11 +41,32 @@ class TestmovieService:
         assert movie.id is not None
 
     def test_get_all(self):
-        movies = self.movie_service.get_all(filters={"director_id":None,
-                                                     "genre_id":None,
-                                                     "year":None})
+        movies = self.movie_service.get_all(filters={"director_id": None,
+                                                     "genre_id": None,
+                                                     "year": None})
 
         assert len(movies) > 0
+
+    # def test_get_all_director(self):
+    #     movies = self.movie_service.get_all(filters={"director_id": 1,
+    #                                                  "genre_id": None,
+    #                                                  "year": None})
+    #
+    #     assert len(movies) == 1
+    #
+    # def test_get_all_genre(self):
+    #     movies = self.movie_service.get_all(filters={"director_id": None,
+    #                                                  "genre_id": 1,
+    #                                                  "year": None})
+    #
+    #     assert len(movies) == 1
+    #
+    # def test_get_all_year(self):
+    #     movies = self.movie_service.get_all(filters={"director_id": None,
+    #                                                  "genre_id": None,
+    #                                                  "year": 2023})
+    #
+    #     assert len(movies) == 3
 
     def test_create(self):
         movie_d = {
