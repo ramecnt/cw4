@@ -1,3 +1,5 @@
+from sqlalchemy import desc
+
 from app.dao.model.movie import Movie
 
 
@@ -18,16 +20,19 @@ class MovieDAO:
         # if "year" in filters:
         #     t = t.filter(Movie.year == filters.get("year"))
         # return t.all()
-        return self.session.query(Movie).all()
+        return self.session.query(Movie)
 
-    def get_by_director_id(self, val):
-        return self.session.query(Movie).filter(Movie.director_id == val).all()
+    def get_by_director_id(self, director_id):
+        return self.session.query(Movie).filter(Movie.director_id == director_id)
 
-    def get_by_genre_id(self, val):
-        return self.session.query(Movie).filter(Movie.genre_id == val).all()
+    def get_by_genre_id(self, genre_id):
+        return self.session.query(Movie).filter(Movie.genre_id == genre_id)
 
-    def get_by_year(self, val):
-        return self.session.query(Movie).filter(Movie.year == val).all()
+    def get_by_year(self, year):
+        return self.session.query(Movie).filter(Movie.year == year)
+
+    def get_by_status(self):
+        return self.session.query(Movie).order_by(desc(Movie.year))
 
     def create(self, movie_d):
         ent = Movie(**movie_d)

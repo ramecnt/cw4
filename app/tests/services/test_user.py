@@ -11,12 +11,12 @@ from app.service.user import UserService
 def user_dao():
     user_dao = UserDAO(None)
 
-    jonh = User(id=1, username='jonh')
-    kate = User(id=2, username='kate')
-    max = User(id=3, username='max')
+    jonh = User(id=1, e_mail='jonh', password="asdasd")
+    kate = User(id=2, e_mail='kate', password="qweqwe")
+    max = User(id=3, e_mail='max', password="qweqwe")
 
     user_dao.get_one = MagicMock(return_value=jonh)
-    user_dao.get_by_username = MagicMock(return_value=jonh)
+    user_dao.get_by_email = MagicMock(return_value=jonh)
     user_dao.get_all = MagicMock(return_value=[jonh, kate, max])
     user_dao.create = MagicMock(return_value=User(id=3))
     user_dao.delete = MagicMock()
@@ -54,7 +54,7 @@ class TestUserService:
     def test_update(self):
         user_d = {
             "id": 3,
-            "name": "Tvan",
+            "e_mail": "Tvan",
             'password': 'asd'
         }
 

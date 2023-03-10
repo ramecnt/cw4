@@ -22,14 +22,20 @@ class UserService:
         return self.dao.create(user_d)
 
     def update(self, user_d):
+        user = self.dao.get_one(user_d["id"])
+        if "password_1" in user_d:
+            if self.generate_password(user_d["password_1"]) == user.password:
+                user_d["password"] = self.generate_password(user_d.get('password_2'))
+            else:
+                raise Exception
         self.dao.update(user_d)
         return self.dao
 
     def delete(self, bid):
         self.dao.delete(bid)
 
-    def get_by_username(self, username):
-        return self.dao.get_by_username(username)
+    def get_by_email(self, username):
+        return self.dao.get_by_email(username)
 
     def generate_password(self, password):
         return base64.b64encode(hashlib.pbkdf2_hmac(

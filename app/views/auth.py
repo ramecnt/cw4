@@ -2,24 +2,38 @@ from flask import request, abort
 from flask_restx import Resource, Namespace
 
 from app.implemented import auth_service
+from app.implemented import user_service
+from app.decorators import auth_required
 
 auth_ns = Namespace('auth')
 
 
-@auth_ns.route('/')
-class AuthView(Resource):
+@auth_ns.route("/register")
+class AuthsView(Resource):
     def post(self):
         req_json = request.json
-        username = req_json.get('username')
+        if None in req_json:
+            abort(400, "не корректный запрос")
+        user_service.create(req_json)
+        return "", 200
+
+
+@auth_ns.route('/login')
+class AuthView(Resource):
+    @auth_required
+    def post(self):
+        req_json = request.json
+        e_mail = req_json.get('e_mail')
         password = req_json.get('password')
 
-        if None in [username, password]:
+        if None in [e_mail, password]:
             abort(401)
 
-        tokens = auth_service.generate_token(username, password)
+        tokens = auth_service.generate_token(e_mail, password)
 
         return tokens, 201
 
+    @auth_required
     def put(self):
         req_json = request.json
         refresh_token = req_json.get("refresh_token")
@@ -27,6 +41,6 @@ class AuthView(Resource):
         if refresh_token is None:
             abort(401)
 
-        tokens = auth_service.approve_refresh_token(refresh_token)
+        tokens = auth_service.check_refresh_token(refresh_token)
 
         return tokens, 201
