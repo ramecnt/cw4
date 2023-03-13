@@ -6,7 +6,7 @@ from marshmallow import fields, Schema
 class User(db.Model):
     __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    e_mail = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String, unique=True, nullable=False)
     password = db.Column(db.String, nullable=False)
     name = db.Column(db.String)
     surname = db.Column(db.String)
@@ -15,7 +15,7 @@ class User(db.Model):
 
 class UserSchema(Schema):
     id = fields.Int()
-    e_mail = fields.Str()
+    email = fields.Str()
     password = fields.Str()
     name = fields.Str()
     surname = fields.Str()

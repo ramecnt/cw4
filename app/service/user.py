@@ -43,7 +43,7 @@ class UserService:
             password.encode('utf-8'),
             PWD_HASH_SALT,
             PWD_HASH_ITERATIONS
-        ))
+        )).decode('utf-8')
 
     def compare_password(self, password_hash, password_other):
         return hmac.compare_digest(

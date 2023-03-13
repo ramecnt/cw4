@@ -8,7 +8,7 @@ from app.decorators import auth_required
 auth_ns = Namespace('auth')
 
 
-@auth_ns.route("/register")
+@auth_ns.route("/register/")
 class AuthsView(Resource):
     def post(self):
         req_json = request.json
@@ -18,18 +18,17 @@ class AuthsView(Resource):
         return "", 200
 
 
-@auth_ns.route('/login')
+@auth_ns.route('/login/')
 class AuthView(Resource):
-    @auth_required
     def post(self):
         req_json = request.json
-        e_mail = req_json.get('e_mail')
+        email = req_json.get('email')
         password = req_json.get('password')
 
-        if None in [e_mail, password]:
+        if None in [email, password]:
             abort(401)
 
-        tokens = auth_service.generate_token(e_mail, password)
+        tokens = auth_service.generate_token(email, password)
 
         return tokens, 201
 

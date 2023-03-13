@@ -10,8 +10,8 @@ class AuthService:
     def __init__(self, service: UserService):
         self.service = service
 
-    def generate_token(self, e_mail, password, refresh=False):
-        user = self.service.get_by_email(e_mail)
+    def generate_token(self, email, password, refresh=False):
+        user = self.service.get_by_email(email)
 
         if user is None:
             raise Exception()
@@ -21,7 +21,7 @@ class AuthService:
                 raise Exception()
 
         data = {
-            'e_mail': user.e_mail,
+            'email': user.email,
             'password': user.password
         }
 
@@ -40,12 +40,12 @@ class AuthService:
 
     def check_refresh_token(self, refresh_token):
         data = jwt.decode(refresh_token, PWD_SECRET, algorithms=[PWD_ALGORITHM])
-        e_mail = data.get('e_mail')
+        email = data.get('email')
 
-        user = self.service.get_by_email(e_mail)
+        user = self.service.get_by_email(email)
 
         if user is None:
             raise Exception()
 
-        return self.generate_token(user.e_mail, user.password, refresh=True)
+        return self.generate_token(user.email, user.password, refresh=True)
 

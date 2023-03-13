@@ -36,5 +36,5 @@ class UserDAO:
         self.session.add(user)
         self.session.commit()
 
-    def get_by_email(self, e_mail):
-        return self.session.query(User).filter(User.e_mail == e_mail).first()
+    def get_by_email(self, email):
+        return self.session.query(User).filter(User.email == email).first()
