@@ -31,8 +31,8 @@ class MovieDAO:
     def get_by_year(self, year):
         return self.session.query(Movie).filter(Movie.year == year)
 
-    def get_by_status(self):
-        return self.session.query(Movie).order_by(desc(Movie.year))
+    def get_class(self):
+        return Movie
 
     def create(self, movie_d):
         ent = Movie(**movie_d)
